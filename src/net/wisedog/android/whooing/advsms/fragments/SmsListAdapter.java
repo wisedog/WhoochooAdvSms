@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.wisedog.android.whooing.advsms;
+package net.wisedog.android.whooing.advsms.fragments;
 
 import java.util.ArrayList;
+
+import net.wisedog.android.whooing.advsms.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -69,12 +71,18 @@ public class SmsListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.sms_list_item, parent, false);
         }
-        //TextView textContent = (TextView) convertView.findViewById(R.id.post_it_text);
+        TextView textContent = (TextView) convertView.findViewById(R.id.sms_list_content);
+        TextView textDate = (TextView) convertView.findViewById(R.id.sms_list_date);
+        TextView textAddress = (TextView) convertView.findViewById(R.id.sms_list_address);
+        if(textContent == null || textDate == null || textAddress == null){
+        	return null;
+        }
         MessageEntity item = mDataArray.get(pos);
-        
-        /*if(item != null && textContent != null){
-            textContent.setText(item.content);
-        }*/
+        if(item != null){
+        	textContent.setText(item.getTrimBody());
+        	textDate.setText(item.getDateStrWithTimestamp());
+        	textAddress.setText(item.getAddress());
+        }
         return convertView;
     }
 

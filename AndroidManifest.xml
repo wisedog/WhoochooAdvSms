@@ -25,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="net.wisedog.android.whooing.advsms.fragments.MainSmsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".auth.WhooingAuthMain" android:screenOrientation="portrait"></activity>
+        <activity android:name=".auth.WhooingAuthWeb"></activity>
+        <activity android:name="net.wisedog.android.whooing.advsms.fragments.SettingActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

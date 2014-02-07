@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">WhooingSmsAdv</string>
+    <string name="app_name">후잉 문자 자동 입력기</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    
+    <string name="auth_doing">▶</string>
+    <string name="exit">종료</string>
+    <string name="is_exit">종료하시겠습니까?</string>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="yes">네</string>
+    <string name="no">아니오</string>
+    <string name="text_complete">완료</string>
+    
+    <string name="msg_auth_success">인증성공!</string>
+    <string name="msg_auth_fail">인증 실패!</string>
+    
+    
+    <!-- Setting -->
+    <string name="setting_loading_card">보유 카드 설정</string>
+    <string name="setting_alarm_time">알림 간격</string>
 
 </resources>

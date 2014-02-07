@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.wisedog.android.whooing.advsms;
+package net.wisedog.android.whooing.advsms.fragments;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -27,14 +27,6 @@ public class MessageEntity {
 	private long timestamp;
 	private String body;
 	
-	String getAddress(){
-		return address;
-	}
-	
-	String getBody(){
-		return body;
-	}
-
 	public MessageEntity(long _msgId, long _threadID, String _addr,
 			long _contactId, long _timestamp, String _body) {
 		msgId = _msgId;
@@ -44,6 +36,21 @@ public class MessageEntity {
 		timestamp = _timestamp;
 		body = _body;
 	}
+	
+
+	public String getAddress(){
+		return address;
+	}
+	
+	public String getBody(){
+		return body;
+	}
+	
+	public String getTrimBody(){
+		String trimBody = body.replaceAll("[\n\r]", " ");
+		return trimBody;
+	}
+	
 	
 	/**
 	 * @return date string with timestamp
