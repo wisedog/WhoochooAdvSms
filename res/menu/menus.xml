@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:title=""
+        android:icon="@drawable/menu_lists_button"
+        android:showAsAction="always"
+        >
+
+        <!-- submenus -->
+        <menu>
+            <item
+                android:id="@+id/menu_action_setting"
+                android:title="@string/submenu_setting"/>
+            <item
+                android:id="@+id/menu_action_rating"
+                android:title="@string/submenu_rating"/>
+            <item
+                android:id="@+id/menu_action_about"
+                android:title="@string/submenu_about"/>
+        </menu>
+    </item>
+
+</menu>
