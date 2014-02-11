@@ -16,8 +16,8 @@
 package net.wisedog.android.whooing.advsms;
 
 public class CardInfo {
-	// Do not change order
-	static final String[] cardAddressList = {
+	// Do not change order!
+	public static final String[] cardAddressList = {
 		"15447000", "신한카드",
 		"15888700", "삼성카드",
 		"15661000", "씨티카드",

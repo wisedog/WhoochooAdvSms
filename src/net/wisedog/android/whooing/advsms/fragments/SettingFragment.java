@@ -17,6 +17,7 @@ package net.wisedog.android.whooing.advsms.fragments;
 
 import java.util.ArrayList;
 
+import net.wisedog.android.whooing.advsms.CardInfo;
 import net.wisedog.android.whooing.advsms.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -73,11 +74,24 @@ public class SettingFragment extends Fragment{
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			
+			ArrayList<String> array = new ArrayList<String>();
+			String[] rawData = CardInfo.cardAddressList;
+			String item = "";
+			for(int i = 0; i < rawData.length; i++){
+				if((i % 2) == 0){
+					item = rawData[i];
+				}else{
+					item = item + "("+rawData[i]+")";
+					array.add(item);
+				}
+			}
+			String[] items = new String[array.size()];
+			items = array.toArray(items);
+			
 			// Set the dialog title
-			builder.setTitle("")
-					// R.string.pick_toppings)
-					// .setSingle
-					.setMultiChoiceItems(R.array.alarm_interval, null,
+			builder.setTitle(getString(R.string.setting_dlg_card_title))
+					.setMultiChoiceItems(items, null,
 							new DialogInterface.OnMultiChoiceClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
@@ -112,7 +126,7 @@ public class SettingFragment extends Fragment{
 								@Override
 								public void onClick(DialogInterface dialog,
 										int id) {
-
+									// do nothing
 								}
 							});
 
@@ -123,8 +137,11 @@ public class SettingFragment extends Fragment{
 	static public class AlarmDialogFragment extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			
 			final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>(); 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			
+			
 			// Set the dialog title
 			builder.setTitle("")
 					// R.string.pick_toppings)

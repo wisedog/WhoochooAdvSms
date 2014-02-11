@@ -52,7 +52,7 @@ public class MainSmsActivity extends Activity {
 			.replace(R.id.content_frame, f).commit();
 			break;
 		case R.id.menu_action_rating:
-			final String appName = "net.wisedog.android.whooing";	//TODO
+			final String appName = "net.wisedog.android.whooing.advsms";
         	try {
         	    startActivity(
         	    		new Intent(Intent.ACTION_VIEW, 
@@ -72,4 +72,16 @@ public class MainSmsActivity extends Activity {
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
+
+	@Override
+	public void onBackPressed() {
+		int count = getFragmentManager().getBackStackEntryCount();
+		if(count == 1){
+			finish();
+			return;
+		}
+		super.onBackPressed();
+	}
+	
+	
 }

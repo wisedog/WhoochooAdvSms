@@ -14,67 +14,53 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5E5E5"
+    android:orientation="vertical"
     android:padding="10dp" >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/setting_text_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:gravity="right" >
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:text="@string/setting_card"
+        android:textColor="#333333"
+        android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/user_setting_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClickCancel"
-            android:text="@string/cancel"
-            android:textColor="#333333"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/user_setting_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClickComplete"
-            android:text="@string/text_complete"
-            android:textColor="#333333" />
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/setting_text_hold_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="20dp"
+        android:gravity="center_vertical"
+        android:textColor="#777777"
+        android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/setting_text_card"
-            android:text="@string/setting_loading_card"
-            android:textColor="#AAAAAA"
-            android:textSize="24sp"
-            android:gravity="center_vertical"
-            android:clickable="true" />
-       	
-        <View 
-            android:layout_height="1dp"
-            android:layout_width="match_parent"
-            android:background="@android:color/darker_gray"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/setting_text_alarm_time"
-            android:text="@string/setting_alarm_time"
-            android:textColor="#AAAAAA"
-            android:textSize="24sp"
-            android:gravity="center_vertical" 
-            android:clickable="true"/>
+    <TextView
+        android:id="@+id/setting_text_alarm_time"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:text="@string/setting_alarm_time"
+        android:textColor="#333333"
+        android:textSize="24sp" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/setting_text_alarm_setting"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/setting_alarm_time_desc"
+        android:textColor="#777777"
+        android:textSize="14sp" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -21,8 +21,11 @@
     
     
     <!-- Setting -->
-    <string name="setting_loading_card">보유 카드 설정</string>
+    <string name="setting_card">보유 카드 설정</string>
     <string name="setting_alarm_time">알림 간격</string>
+    <string name="setting_dlg_card_title">보유 카드 선택</string>
+    <string name="setting_dlg_alarm_title">알람 시간 선택</string>
+    <string name="setting_alarm_time_desc">아직 알람은 지원하지 않습니다</string>
     
     
     <!-- Submenus -->
@@ -38,7 +41,7 @@
     <string name="about_app_contact_developer">Contact to App developer</string>
     <string name="about_app_contact_developer_email">kim.jongha@gmail.com</string>
     <string name="about_app_whooing_url">Website : http://whooing.com</string>
-    <string name="about_app_blog">Blog : http://story.wisedog.net</string>
+    <string name="about_app_blog">Blog : http://story.wisedog.net/category/my_programming_stuff/</string>
     <string name="about_app_creator">Created by Jongha Kim</string>
     <string name="about_app_send_email">Choose Email Client</string>
     <string name="about_app_version">Version : </string>
