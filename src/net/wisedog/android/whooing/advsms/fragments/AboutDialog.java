@@ -28,10 +28,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * @author Wisedog(me@wisedog.net)
- *
- */
 public class AboutDialog extends DialogFragment {
 
     static public AboutDialog newInstance() {
@@ -44,8 +40,6 @@ public class AboutDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -33,8 +33,6 @@ import android.widget.TextView;
 
 public class SettingFragment extends Fragment{
 	
-	
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -125,12 +123,7 @@ public class SettingFragment extends Fragment{
 	static public class AlarmDialogFragment extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>(); // Where
-																				// we
-																				// track
-																				// the
-																				// selected
-																				// items
+			final ArrayList<Integer> mSelectedItems = new ArrayList<Integer>(); 
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			// Set the dialog title
 			builder.setTitle("")
