@@ -37,8 +37,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingFragment extends Fragment{
+	
+	private static TextView mHoldingCardTextView = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,15 +52,31 @@ public class SettingFragment extends Fragment{
 			TextView alarmSetting = (TextView)view.findViewById(R.id.setting_text_alarm_time);
 			TextView section = (TextView)view.findViewById(R.id.setting_text_section);
 			TextView currentSection = (TextView)view.findViewById(R.id.setting_text_current_section);
+			TextView currentCard = (TextView)view.findViewById(R.id.setting_text_hold_card);
+			
+			SharedPreferences pref = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+			
+			if(currentCard != null){
+				mHoldingCardTextView = currentCard;
+				String holdingCards = pref.getString(AppDefine.KEY_SHARED_HOLDING_CARD, null);
+				if(holdingCards != null){
+					ArrayList<Integer> array = CardInfo.convertStringToIntArray(holdingCards);
+					String msg = "";
+					for(int i = 0; i < array.size(); i++){
+						msg = msg + CardInfo.cardAddressList[(array.get(i)*2) +1] + ", ";
+					}
+					msg = msg.substring(0, msg.length()-2); //remove ", "
+					currentCard.setText(msg);
+				}
+			}
 			
 			
 			if(cardSetting != null && alarmSetting != null && section != null &&
 					currentSection != null){
 				final FragmentManager mgr = getActivity().getFragmentManager();
 				
-				SharedPreferences pref = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
-				String currSection = pref.getString(AppDefine.KEY_SHARED_CURRENT_SECTION, null);
 				
+				String currSection = pref.getString(AppDefine.KEY_SHARED_CURRENT_SECTION_ID, null);
 				String sectionInfo = pref.getString(AppDefine.KEY_SHARED_SECTION_INFO, null);
 				if(sectionInfo != null){
 					try{
@@ -67,7 +86,7 @@ public class SettingFragment extends Fragment{
 							obj = (JSONObject) array.get(0);
 							String sectionId = obj.getString("section_id");
 							SharedPreferences.Editor editor = pref.edit();
-							editor.putString(AppDefine.KEY_SHARED_CURRENT_SECTION, sectionId);
+							editor.putString(AppDefine.KEY_SHARED_CURRENT_SECTION_ID, sectionId);
 							editor.commit();
 							currentSection.setText(obj.getString("title"));
 						}
@@ -164,9 +183,21 @@ public class SettingFragment extends Fragment{
 								public void onClick(DialogInterface dialog,
 										int id) {
 									SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+									SharedPreferences.Editor editor = prefs.edit();
+									String str = CardInfo.convertIntArrayToString(mSelectedItems);
+									editor.putString(AppDefine.KEY_SHARED_HOLDING_CARD, str);
+									editor.commit();
 									
-									
-
+									String msg = "";
+									for(int i = 0; i < mSelectedItems.size(); i++){
+										msg = msg + CardInfo.cardAddressList[(mSelectedItems.get(i)*2) +1] + ", ";
+									}
+									if(msg.length() > 1){
+										msg = msg.substring(0, msg.length()-2);	//remove ", "
+									}
+									if(mHoldingCardTextView != null){
+										mHoldingCardTextView.setText(msg);
+									}
 								}
 							})
 					.setNegativeButton(R.string.cancel,
@@ -183,44 +214,74 @@ public class SettingFragment extends Fragment{
 	}
 	
 	static public class SectionDialogFragment extends DialogFragment {
+		
+		int mSelectIndex;
+		JSONArray mArray = null;
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			
+			SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+			String sectionInfo = prefs.getString(AppDefine.KEY_SHARED_SECTION_INFO, null);
+			if(sectionInfo != null){
+				try{
+					JSONArray array = new JSONArray(sectionInfo);
+					mArray = array;
+					String[] items = new String[array.length()];
+					for(int i = 0; i < array.length(); i++){
+						JSONObject obj = (JSONObject) array.get(i);
+						items[i] = obj.getString("title");
+					}
+					// Set the dialog title
+					builder.setTitle("")
+							.setSingleChoiceItems(items, 0,
+									new DialogInterface.OnClickListener() {
 
-			// Set the dialog title
-			builder.setTitle("")
-					.setSingleChoiceItems(R.array.alarm_interval, 0,
-							new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog,
+												int which) {
+											mSelectIndex = which;
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
+										}
+									})
 
-								}
-							})
+							// Set the action buttons
+							.setPositiveButton(R.string.ok,
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog,
+												int id) {
+											SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+											SharedPreferences.Editor editor = prefs.edit();
+											try{
+												JSONObject obj = mArray.getJSONObject(mSelectIndex);
+												String sectionId = obj.getString("section_id");
+												editor.putString(AppDefine.KEY_SHARED_CURRENT_SECTION_ID, sectionId);
+												editor.commit();
+											}catch(JSONException e){
+												e.printStackTrace();
+											}catch(NullPointerException e1){
+												e1.printStackTrace();
+											}
+										}
+									})
+							.setNegativeButton(R.string.cancel,
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog,
+												int id) {
 
-					// Set the action buttons
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int id) {
-									// User clicked OK, so save the
-									// mSelectedItems results somewhere
-									// or return them to the component that
-									// opened the dialog
-
-								}
-							})
-					.setNegativeButton(R.string.cancel,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int id) {
-
-								}
-							});
+										}
+									});
+				}
+				catch(JSONException e){
+					e.printStackTrace();
+				}
+				
+			}
+			else{
+				Toast.makeText(getActivity(), getString(R.string.setting_warning_no_section), Toast.LENGTH_LONG).show();
+			}
 
 			return builder.create();
 		}

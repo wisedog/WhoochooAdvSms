@@ -21,11 +21,13 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import net.wisedog.android.whooing.advsms.AppDefine;
+import net.wisedog.android.whooing.advsms.CardInfo;
 import net.wisedog.android.whooing.advsms.R;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -33,9 +35,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -47,16 +51,24 @@ public class MainFragment extends Fragment {
 	
 	private ArrayList<MessageEntity> mDataArray;
 	private SmsListAdapter mListAdapter;
+	private int mSelectIndex = -1;
+	
+	private long mFromTimeStamp;
+	private long mToTimeStamp;
+	
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -68,76 +80,147 @@ public class MainFragment extends Fragment {
 			if(listView != null){
 				listView.setAdapter(mListAdapter);
 			}
-			String[] str = {"3일 전","특정 날짜 명시"};
-			Spinner spinner = (Spinner) view.findViewById(R.id.smsActivitySpinner);
-			TextView textview = (TextView) view.findViewById(R.id.smsActivityDateText);
-			if(spinner != null){
-				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-		                android.R.layout.select_dialog_item, str) {
-					
-		            @Override
-		            public View getView(int position, View convertView, ViewGroup parent) {
-		                View v = super.getView(position, convertView, parent);
-		                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
-		                return v;
-		            }
-
-		        };
-		        spinner.setAdapter(adapter);
-		        
-		        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-		        	final Calendar c = Calendar.getInstance();
-
-					@Override
-					public void onItemSelected(AdapterView<?> parent, View view, 
-				            int pos, long id) {
-						if(pos == 0){ 
-					        /*c.add(Calendar.DAY_OF_MONTH, -3);
-							readSMSMessage(MODE_LAST_THREE_DAYS, c.get(Calendar.YEAR), 
-									c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));*/
-							Calendar rightNow = Calendar.getInstance(TimeZone.getDefault());
-							Date now = rightNow.getTime();
-							long nowTimestamp = now.getTime();
-							
-					        rightNow.add(Calendar.DAY_OF_MONTH, -3);
-					        Date date = rightNow.getTime();
-					        long threeDaysAgo = date.getTime();
-					        
-							readSmsMessage(threeDaysAgo, nowTimestamp);
-						}
-						else if(pos == 1){
-							
-					        
-					        int year = c.get(Calendar.YEAR);
-					        int month = c.get(Calendar.MONTH)+1;
-					        int day = c.get(Calendar.DAY_OF_MONTH); 
-							
-							DatePickerDialog dlg = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-								
-								@Override
-								public void onDateSet(DatePicker view, int year, int monthOfYear,
-										int dayOfMonth) {
-									/*readSMSMessage(MainActivity.MODE_SPECIFIED_DATE, year, monthOfYear, dayOfMonth);*/
-									
-								}
-							}, year, month, day);
-							dlg.show();
-						}
-						
-						
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-		        if(textview != null){
-		        	textview.setText(str[0]);
-		        }
+			String[] str = {"3일 전","특정 날짜"};
+			Spinner spinnerDate = (Spinner) view.findViewById(R.id.smsMainDateSpinner);
+			Spinner spinnerCard = (Spinner) view.findViewById(R.id.smsMainCardSpinner);
+			TextView messageBoard = (TextView) view.findViewById(R.id.smsMessageBoard);
+			Button searchBtn = (Button) view.findViewById(R.id.smsBtnSearch);
+			
+			SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+			String holdingCards = prefs.getString(AppDefine.KEY_SHARED_HOLDING_CARD, null);
+			if(holdingCards == null){
+				if(spinnerDate != null && spinnerCard != null
+						&& searchBtn != null){
+					spinnerDate.setEnabled(false);
+					spinnerCard.setEnabled(false);
+					searchBtn.setEnabled(false);
+				}
+				if(messageBoard != null){
+					messageBoard.setText(getString(R.string.main_msg_need_setting));
+				}
 			}
-			spinner.setSelection(0);
+			else{
+				
+				if(searchBtn != null){
+					searchBtn.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Get cards
+							// TODO get date
+							// call readmessage
+							
+						}
+					});
+				}
+				//setting holding cards array
+				if(spinnerCard != null){
+					ArrayList<Integer> array = CardInfo.convertStringToIntArray(holdingCards);
+					String[] cards = new String[array.size()];
+					for(int i = 0; i < array.size(); i++){
+						cards[i] = CardInfo.cardAddressList[(array.get(i)*2) +1];
+					}
+					
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+			                android.R.layout.select_dialog_item, cards) {
+						
+			            @Override
+			            public View getView(int position, View convertView, ViewGroup parent) {
+			                View v = super.getView(position, convertView, parent);
+			                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+			                return v;
+			            }
+
+			        };
+			        spinnerCard.setAdapter(adapter);
+			        spinnerCard.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+						@Override
+						public void onItemSelected(AdapterView<?> parent,
+								View view, int pos, long id) {
+							mSelectIndex = pos;
+							//TODO ReadMessage here
+						}
+
+						@Override
+						public void onNothingSelected(AdapterView<?> parent) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				}
+				
+				if(spinnerDate != null){
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+			                android.R.layout.select_dialog_item, str) {
+						
+			            @Override
+			            public View getView(int position, View convertView, ViewGroup parent) {
+			                View v = super.getView(position, convertView, parent);
+			                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+			                return v;
+			            }
+
+			        };
+			        spinnerDate.setAdapter(adapter);
+			        
+			        spinnerDate.setOnItemSelectedListener(new OnItemSelectedListener() {
+			        	final Calendar c = Calendar.getInstance();
+
+						@Override
+						public void onItemSelected(AdapterView<?> parent, View view, 
+					            int pos, long id) {
+							if(pos == 0){ 
+						        /*c.add(Calendar.DAY_OF_MONTH, -3);
+								readSMSMessage(MODE_LAST_THREE_DAYS, c.get(Calendar.YEAR), 
+										c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));*/
+								Calendar rightNow = Calendar.getInstance(TimeZone.getDefault());
+								Date now = rightNow.getTime();
+								long nowTimestamp = now.getTime();
+								
+						        rightNow.add(Calendar.DAY_OF_MONTH, -3);
+						        Date date = rightNow.getTime();
+						        long threeDaysAgo = date.getTime();
+						        
+						        mFromTimeStamp = threeDaysAgo;
+						        mToTimeStamp = nowTimestamp;
+						       
+						        //TODO 아랫줄 제거. BTN 이벤트 핸들러로 넘기기 
+								readSmsMessage(threeDaysAgo, nowTimestamp);
+							}
+							else if(pos == 1){
+								
+						        
+						        int year = c.get(Calendar.YEAR);
+						        int month = c.get(Calendar.MONTH)+1;
+						        int day = c.get(Calendar.DAY_OF_MONTH); 
+								
+								DatePickerDialog dlg = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+									
+									@Override
+									public void onDateSet(DatePicker view, int year, int monthOfYear,
+											int dayOfMonth) {
+										/*readSMSMessage(MainActivity.MODE_SPECIFIED_DATE, year, monthOfYear, dayOfMonth);*/
+										
+									}
+								}, year, month, day);
+								dlg.show();
+							}
+							
+							
+						}
+
+						@Override
+						public void onNothingSelected(AdapterView<?> parent) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+			        
+				}
+				spinnerDate.setSelection(0);
+				
+			}
 		}
 		return view;
 	}
@@ -158,21 +241,34 @@ public class MainFragment extends Fragment {
 		Uri allMessage = Uri.parse("content://sms");
 		ContentResolver cr = getActivity().getContentResolver();
 		
+		if(mSelectIndex == -1){
+			return 0;
+		}
+		
 		showProgress(true);
 		
-		//TODO add from when selective query
+		SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+		String holdingCards = prefs.getString(AppDefine.KEY_SHARED_HOLDING_CARD, null);
+		
+		if(holdingCards == null){
+			return 0;
+		}
+		ArrayList<Integer> array = CardInfo.convertStringToIntArray(holdingCards);
+		String addr = CardInfo.cardAddressList[array.get(mSelectIndex)*2];
+		
+		
 		Cursor c = null;
 		String[] PROJECTION = { "_id", "thread_id",
 			"address", "person", "date", "body" }; 
-		String WHERE1 = "address = '15661000'";
+		String WHERE1 = "address = " + addr;
 		String WHERE = "(date BETWEEN " + from + " AND " 
 				+ to + ") AND (" + WHERE1 + ")";
 		
 		c = cr.query(allMessage, PROJECTION , WHERE, null, "date DESC");
-		
 
 		String string = "";
 		int count = 0;
+		mDataArray.clear();
 		while (c.moveToNext()) {
 			MessageEntity entity = new MessageEntity(c.getLong(0), c.getLong(1), c.getString(2), 
 					c.getLong(3), c.getLong(4), c.getString(5));

@@ -4,7 +4,10 @@
     <string name="app_name">후잉 문자 자동 입력기</string>
     <string name="action_settings">Settings</string>
     
-    <string name="auth_doing">▶</string>
+    <!-- General -->
+    <string name="text_complete">완료</string>
+    <string name="text_about">정보</string>
+    <string name="text_search">검색</string>
     <string name="exit">종료</string>
     <string name="is_exit">종료하시겠습니까?</string>
     <string name="ok">확인</string>
@@ -12,13 +15,14 @@
     <string name="yes">네</string>
     <string name="no">아니오</string>
     
-    <!-- General -->
-    <string name="text_complete">완료</string>
-    <string name="text_about">정보</string>
+    <!-- Main -->
+    <string name="main_msg_need_setting">우측 상단 설정버튼을 눌러서 설정을 먼저 해주세요</string>
+    
+    <!-- Auth -->
     
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
-    
+    <string name="auth_doing">▶</string>
     
     <!-- Setting -->
     <string name="setting_card">보유 카드 설정</string>
@@ -27,6 +31,7 @@
     <string name="setting_dlg_alarm_title">알람 시간 선택</string>
     <string name="setting_alarm_time_desc">아직 알람은 지원하지 않습니다</string>
     <string name="setting_section">문자 입력 섹션</string>
+    <string name="setting_warning_no_section">섹션 정보가 없습니다.</string>
     
     
     <!-- Submenus -->
@@ -37,10 +42,12 @@
     
     <!-- About dialog  -->
     <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without language, currency.</string>
+    <string name="about_app_contact_developer">개발자 이메일</string>
+    <string name="about_app_contact_developer_email">kim.jongha@gmail.com</string>
+    
     <string name="about_app_contact_whooing">Contact to Whooing</string>
     <string name="about_app_contact_whooing_email">support@whooing.com</string>
-    <string name="about_app_contact_developer">Contact to App developer</string>
-    <string name="about_app_contact_developer_email">kim.jongha@gmail.com</string>
+    
     <string name="about_app_whooing_url">Website : http://whooing.com</string>
     <string name="about_app_blog">Blog : http://story.wisedog.net/category/my_programming_stuff/</string>
     <string name="about_app_creator">Created by Jongha Kim</string>

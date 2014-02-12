@@ -15,29 +15,36 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:weightSum="100">
+        <Spinner
+            android:id="@+id/smsMainCardSpinner" 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="40"/>
         <Spinner 
-            android:id="@+id/smsActivitySpinner"
+            android:id="@+id/smsMainDateSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="40"/>
-        <TextView
-            android:id="@+id/smsActivityDateText" 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="asdf"
-            android:textSize="20sp"
-            android:layout_weight="40"/>
-        <CheckBox 
+        <Button 
+            android:id="@+id/smsBtnSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:text="@string/text_search"
             android:layout_weight="20"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/smsMessageBoard"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/smsActivityDateLayout"
+        android:textSize="20sp"
+        android:gravity="center"
+        ></TextView>
 
     <ListView
         android:id="@+id/smsListView"
         android:layout_width="match_parent"
-        android:layout_below="@id/smsActivityDateLayout"
+        android:layout_below="@id/smsMessageBoard"
         android:layout_alignParentBottom="true"
         android:layout_height="match_parent"
         >

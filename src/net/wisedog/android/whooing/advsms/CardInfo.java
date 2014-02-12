@@ -15,6 +15,9 @@
  */
 package net.wisedog.android.whooing.advsms;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 public class CardInfo {
 	// Do not change order!
 	public static final String[] cardAddressList = {
@@ -39,4 +42,30 @@ public class CardInfo {
 		"15999000", "새마을금고",
 		"16008585", "경남은행", 
 		"15443311", "HSBC"};
+	
+	public static String convertIntArrayToString(ArrayList<Integer> array){
+		String str="";
+		if(array != null){
+			int length = array.size();
+			
+			for(int i = 0; i < length; i++){
+				str = str + array.get(i) + ",";
+			}
+			str = str.substring(0, str.length()-1);	//remove last ,
+		}
+		
+		return str;
+	}
+	
+	public static ArrayList<Integer> convertStringToIntArray(String cards){
+		ArrayList<Integer> array = null;
+		if(cards != null){
+			array = new ArrayList<Integer>();
+			StringTokenizer st = new StringTokenizer(cards, ",");
+			while (st.hasMoreElements()) {
+				array.add(Integer.valueOf(st.nextToken()));
+			}
+		}		
+		return array;
+	}
 }

@@ -56,7 +56,7 @@ public class MessageEntity {
 	 * @return date string with timestamp
 	 * */
 	public String getDateStrWithTimestamp(){
-		Date date = new Date(timestamp * 1000);
+		Date date = new Date(timestamp * 10);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		Locale locale = new Locale("kr", "KR");
