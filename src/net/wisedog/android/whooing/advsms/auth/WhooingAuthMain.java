@@ -130,6 +130,7 @@ public class WhooingAuthMain extends Activity {
 				try {
 					JSONArray array = result.getJSONArray("results");
 					JSONObject obj = (JSONObject) array.get(0);
+					String wholeSectionInfo = array.toString();
 					String section = obj.getString("section_id");
 					if(section != null){
 						AppDefine.APP_SECTION = section;
@@ -138,9 +139,10 @@ public class WhooingAuthMain extends Activity {
 								Activity.MODE_PRIVATE);
 						SharedPreferences.Editor editor = prefs.edit();
 						editor.putString(AppDefine.KEY_SHARED_SECTION_ID, section);
+						editor.putString(AppDefine.KEY_SHARED_SECTION_INFO, wholeSectionInfo);
 						editor.commit();
-						/*Intent intent = new Intent(WhooingAuthMain.this, SettingActivity.class);
-						startActivityForResult(intent, AppDefine.MSG_SETTING_DONE);*/
+						setResult(RESULT_OK);
+					    finish();
 					}
 					else{
 						throw new JSONException("Error in getting section id");

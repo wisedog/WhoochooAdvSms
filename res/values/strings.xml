@@ -26,6 +26,7 @@
     <string name="setting_dlg_card_title">보유 카드 선택</string>
     <string name="setting_dlg_alarm_title">알람 시간 선택</string>
     <string name="setting_alarm_time_desc">아직 알람은 지원하지 않습니다</string>
+    <string name="setting_section">문자 입력 섹션</string>
     
     
     <!-- Submenus -->
