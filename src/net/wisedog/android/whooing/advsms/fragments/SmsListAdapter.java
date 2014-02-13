@@ -24,6 +24,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 /**
@@ -33,10 +36,19 @@ import android.widget.TextView;
 public class SmsListAdapter extends BaseAdapter {
     private ArrayList<MessageEntity> mDataArray;
     private LayoutInflater mInflater;
+    private Boolean[] mSelected;
     
     public SmsListAdapter(Context context, ArrayList<MessageEntity> dataArray){
         mDataArray = dataArray;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mSelected = new Boolean[mDataArray.size()];
+        for(int i = 0; i < mDataArray.size(); i++){
+        	mSelected[i] = false;
+        }
+    }
+    
+    public Boolean[] getSelectedArray(){
+    	return mSelected;
     }
     
     public void setData(ArrayList<MessageEntity> dataArray){
@@ -70,6 +82,7 @@ public class SmsListAdapter extends BaseAdapter {
         final int pos = position;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.sms_list_item, parent, false);
+            convertView.setTag(position);
         }
         TextView textContent = (TextView) convertView.findViewById(R.id.sms_list_content);
         TextView textDate = (TextView) convertView.findViewById(R.id.sms_list_date);
@@ -77,6 +90,17 @@ public class SmsListAdapter extends BaseAdapter {
         if(textContent == null || textDate == null || textAddress == null){
         	return null;
         }
+        CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.smsListCheckBox);
+        if(checkbox != null){
+        	checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				
+				@Override
+				public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
+					mSelected[pos] = isChecked;
+				}
+			});
+        }
+        
         MessageEntity item = mDataArray.get(pos);
         if(item != null){
         	textContent.setText(item.getTrimBody());

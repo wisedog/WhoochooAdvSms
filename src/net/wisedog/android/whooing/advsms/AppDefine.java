@@ -66,6 +66,5 @@ public class AppDefine {
 	public static final int MSG_API_FAIL_WITH_404 = 404;
 		
 	public static final int API_GET_SECTIONS = 2010;
-
-
+	public static final int API_POST_SMS = 2011;
 }

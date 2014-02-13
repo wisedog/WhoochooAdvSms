@@ -37,6 +37,9 @@ public class MessageEntity {
 		body = _body;
 	}
 	
+	public long getId(){
+		return msgId;
+	}
 
 	public String getAddress(){
 		return address;
@@ -56,7 +59,7 @@ public class MessageEntity {
 	 * @return date string with timestamp
 	 * */
 	public String getDateStrWithTimestamp(){
-		Date date = new Date(timestamp * 10);
+		Date date = new Date(timestamp);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		Locale locale = new Locale("kr", "KR");

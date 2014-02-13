@@ -40,21 +40,31 @@
         android:textSize="20sp"
         android:gravity="center"
         ></TextView>
+    
+    <Button
+        android:id="@+id/smsBtnUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/text_search" />
 
     <ListView
         android:id="@+id/smsListView"
         android:layout_width="match_parent"
         android:layout_below="@id/smsMessageBoard"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/smsBtnUpload"
         android:layout_height="match_parent"
         >
     </ListView>
+    
+    
 
     <ProgressBar
         android:id="@+id/smsActivityProgress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true" 
+        android:visibility="gone"/>
 
 </RelativeLayout>

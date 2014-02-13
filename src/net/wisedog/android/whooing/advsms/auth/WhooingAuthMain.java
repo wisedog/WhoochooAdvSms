@@ -122,7 +122,7 @@ public class WhooingAuthMain extends Activity {
 			}
 			else if(msg.what == AppDefine.MSG_AUTH_DONE){
 			    updateProgress(2);
-				ThreadRestAPI thread = new ThreadRestAPI(mHandler, WhooingAuthMain.this);
+				ThreadRestAPI thread = new ThreadRestAPI(mHandler, WhooingAuthMain.this, AppDefine.API_GET_SECTIONS);
 				thread.start();
 			}
 			else if(msg.what == AppDefine.MSG_API_OK){

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.advsms.AppDefine;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -12,11 +13,23 @@ import android.util.Log;
 public class ThreadRestAPI extends Thread {
 	private Handler mHandler;
 	private Context mContext;
+	private int mApiKind = 0;
+	private Bundle mBundle;
 	
-	public ThreadRestAPI(Handler mHandler, Context context) {
+	public ThreadRestAPI(Handler mHandler, Context context, int apiKind) {
         super();
         this.mHandler = mHandler;
         this.mContext = context;
+        this.mApiKind = apiKind;
+        checkLoginInfo();
+    }
+	
+	public ThreadRestAPI(Handler mHandler, Context context, int apiKind, Bundle bundle) {
+        super();
+        this.mHandler = mHandler;
+        this.mContext = context;
+        this.mApiKind = apiKind;
+        this.mBundle = bundle;
         checkLoginInfo();
     }
 	
@@ -45,9 +58,22 @@ public class ThreadRestAPI extends Thread {
 	@Override
 	public void run() {
 		JSONObject result = null;
-		Section section = new Section();
-		result = section.getSections(AppDefine.APP_ID, AppDefine.REAL_TOKEN, 
-				AppDefine.APP_SECRET, AppDefine.TOKEN_SECRET);
+		if(mApiKind == AppDefine.API_GET_SECTIONS){
+			Section section = new Section();
+			result = section.getSections(AppDefine.APP_ID, AppDefine.REAL_TOKEN, 
+					AppDefine.APP_SECRET, AppDefine.TOKEN_SECRET);
+		}
+		else if(mApiKind == AppDefine.API_POST_SMS){
+			Outside outside = new Outside();
+			try{
+				mBundle.putString("section_id", AppDefine.APP_SECTION);
+				result = outside.postOutside(AppDefine.APP_ID, AppDefine.REAL_TOKEN, 
+						AppDefine.APP_SECRET, AppDefine.TOKEN_SECRET, mBundle);
+			}catch(NullPointerException e){
+				e.printStackTrace();
+			}			
+		}
+		
 		sendMessage(result);
 		super.run();
 	}
@@ -61,6 +87,7 @@ public class ThreadRestAPI extends Thread {
 			msg.what = AppDefine.MSG_API_FAIL;
 		}
 		msg.obj = result;
+		msg.arg1 = this.mApiKind;
 		mHandler.sendMessage(msg);
 	}
 }

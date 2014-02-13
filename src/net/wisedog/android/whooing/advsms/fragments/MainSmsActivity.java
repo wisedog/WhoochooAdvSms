@@ -16,6 +16,7 @@
 package net.wisedog.android.whooing.advsms.fragments;
 
 import net.wisedog.android.whooing.advsms.R;
+import net.wisedog.android.whooing.advsms.db.DatabaseHandler;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,12 +26,17 @@ import android.view.Menu;
 
 public class MainSmsActivity extends Activity {
 	
+	DatabaseHandler mDb = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		mDb = new DatabaseHandler(this);
+		
 		MainFragment f = new MainFragment();
+		f.setArgument(mDb);
 		getFragmentManager().beginTransaction().addToBackStack(null)
 		.add(R.id.content_frame, f).commit();
 	}
@@ -66,6 +72,9 @@ public class MainSmsActivity extends Activity {
 		case R.id.menu_action_about:
 			AboutDialog newFragment = AboutDialog.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
+			break;
+		case R.id.menu_action_test:
+			mDb.dropTable();
 			break;
 		default:
 			break;

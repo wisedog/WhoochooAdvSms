@@ -17,9 +17,9 @@
     
     <!-- Main -->
     <string name="main_msg_need_setting">우측 상단 설정버튼을 눌러서 설정을 먼저 해주세요</string>
+    <string name="main_btn_input">선택한 SMS 입력</string>
     
     <!-- Auth -->
-    
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
     <string name="auth_doing">▶</string>
@@ -38,6 +38,7 @@
     <string name="submenu_setting">설정</string>
     <string name="submenu_rating">별점 매기기</string>
     <string name="submenu_about">앱 정보</string>
+    <string name="submenu_test">TEST</string>
     
     
     <!-- About dialog  -->
