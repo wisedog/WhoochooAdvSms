@@ -58,15 +58,18 @@ public class MainSmsActivity extends Activity {
 			.replace(R.id.content_frame, f).commit();
 			break;
 		case R.id.menu_action_rating:
-			final String appName = "net.wisedog.android.whooing.advsms";
+			final String packageName = getPackageName();
+			
         	try {
         	    startActivity(
         	    		new Intent(Intent.ACTION_VIEW, 
-        	    				Uri.parse("market://details?id="+appName)));
+        	    				Uri.parse("market://details?id="+packageName)));
         	} catch (android.content.ActivityNotFoundException anfe) {
         	    startActivity(
         	    		new Intent(Intent.ACTION_VIEW, 
-        	    				Uri.parse("http://play.google.com/store/apps/details?id="+appName)));
+        	    				Uri.parse(
+        	    						"http://play.google.com/store/apps/details?id="
+        	    				+ packageName)));
         	}
 			break;
 		case R.id.menu_action_about:
@@ -90,7 +93,5 @@ public class MainSmsActivity extends Activity {
 			return;
 		}
 		super.onBackPressed();
-	}
-	
-	
+	}	
 }

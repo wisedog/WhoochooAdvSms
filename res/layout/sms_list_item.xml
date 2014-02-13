@@ -30,22 +30,19 @@
         <TextView
             android:id="@+id/sms_list_date"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2013.11.29" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/sms_list_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="SMS 본문"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/sms_list_address"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From 1577-1577" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     <RelativeLayout android:layout_width="0dp"
         android:layout_weight="20"

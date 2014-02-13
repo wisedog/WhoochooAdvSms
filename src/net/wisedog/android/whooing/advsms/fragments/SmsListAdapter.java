@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import net.wisedog.android.whooing.advsms.R;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,10 +42,7 @@ public class SmsListAdapter extends BaseAdapter {
     public SmsListAdapter(Context context, ArrayList<MessageEntity> dataArray){
         mDataArray = dataArray;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mSelected = new Boolean[mDataArray.size()];
-        for(int i = 0; i < mDataArray.size(); i++){
-        	mSelected[i] = false;
-        }
+        setData(mDataArray);
     }
     
     public Boolean[] getSelectedArray(){
@@ -53,9 +51,27 @@ public class SmsListAdapter extends BaseAdapter {
     
     public void setData(ArrayList<MessageEntity> dataArray){
         mDataArray = dataArray;
+        if(mDataArray.size() > 0){
+        	mSelected = new Boolean[mDataArray.size()];
+            for(int i = 0; i < mDataArray.size(); i++){
+            	mSelected[i] = false;
+            }
+        }
     }
+    
+    @Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		if(mDataArray.size() > 0){
+			mSelected = null;
+        	mSelected = new Boolean[mDataArray.size()];
+            for(int i = 0; i < mDataArray.size(); i++){
+            	mSelected[i] = false;
+            }
+        }
+	}
 
-    public int getCount() {
+	public int getCount() {
         return mDataArray.size();
     }
 

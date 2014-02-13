@@ -32,7 +32,7 @@ import android.os.Bundle;
  * */
 public class Outside extends AbstractAPI {
 	/**
-	 * Get all sections
+	 * Post SMS Messages
 	 * @param	appID		Application ID
 	 * @param	token		Token
 	 * @param	appKey		Application Key
@@ -46,7 +46,7 @@ public class Outside extends AbstractAPI {
 			return null;
 		}
 		
-		String appSection = bundle.getString("appSection", null);
+		String appSection = bundle.getString("section_id", null);
 		String rows = bundle.getString("rows", null);
 		if(appSection == null || rows == null){
 			return null;
@@ -56,5 +56,30 @@ public class Outside extends AbstractAPI {
 		nameValuePairs.add(new BasicNameValuePair("section_id", appSection));
 		nameValuePairs.add(new BasicNameValuePair("rows", rows));
 		return callRawApiPost(url, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
+	}
+	
+	/**
+	 * Post SMS Messages
+	 * @param	appID		Application ID
+	 * @param	token		Token
+	 * @param	appKey		Application Key
+	 * @param	tokenSecret	Secret key for token
+	 * @return	Returns JSONObject for result, or null if it fails		
+	 * */
+	public JSONObject postReport(String appID, String token, String appKey, String tokenSecret, 
+			Bundle bundle){
+		String url = "https://whooing.com/api/outside_report.json_array";
+		if(bundle == null){
+			return null;
+		}
+		
+		String source = bundle.getString("rows", null);
+		if(source == null){
+			return null;
+		}
+		
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("source", source));
+		return callRawApiPost(url, appID, token, appKey, tokenSecret, null, nameValuePairs);
 	}
 }

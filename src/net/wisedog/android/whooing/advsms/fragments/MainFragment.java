@@ -30,9 +30,10 @@ import net.wisedog.android.whooing.advsms.db.DatabaseHandler;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -57,7 +58,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 @SuppressLint("HandlerLeak")
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment{
 	
 	private ArrayList<MessageEntity> mDataArray;
 	private SmsListAdapter mListAdapter;
@@ -89,7 +90,6 @@ public class MainFragment extends Fragment {
 			if(listView != null){
 				listView.setAdapter(mListAdapter);
 			}
-			String[] str = {"3일 전","특정 날짜"};
 			final Spinner spinnerDate = (Spinner) view.findViewById(R.id.smsMainDateSpinner);
 			final Spinner spinnerCard = (Spinner) view.findViewById(R.id.smsMainCardSpinner);
 			TextView messageBoard = (TextView) view.findViewById(R.id.smsMessageBoard);
@@ -103,24 +103,10 @@ public class MainFragment extends Fragment {
 					
 					@Override
 					public void onClick(View v) {
-						Bundle bundle = new Bundle();
-						Boolean[] selected = mListAdapter.getSelectedArray();
-						String rows = "";
-						for(int i = 0; i < selected.length; i++){
-							if(selected[i] == true){
-								rows = rows + mDataArray.get(i).getBody() + "\n";
-							}
-						}
-						
-						bundle.putString("rows", rows);
-						showProgress(true);
-						sendBtn.setEnabled(false);
-						ThreadRestAPI thread = new ThreadRestAPI(mHandler, getActivity(), AppDefine.API_POST_SMS, bundle);
-						thread.start();
+						invokeThread(AppDefine.API_POST_SMS);
 					}
 				});				
 			}
-			
 			
 			String holdingCards = prefs.getString(AppDefine.KEY_SHARED_HOLDING_CARD, null);
 			if(holdingCards == null){
@@ -135,7 +121,6 @@ public class MainFragment extends Fragment {
 				}
 			}
 			else{
-				
 				if(searchBtn != null){
 					searchBtn.setOnClickListener(new OnClickListener() {
 						
@@ -176,12 +161,12 @@ public class MainFragment extends Fragment {
 						@Override
 						public void onNothingSelected(AdapterView<?> parent) {
 							// Do nothing
-							
 						}
 					});
 				}
 				
 				if(spinnerDate != null){
+					String[] str = {"3일 전","마지막 전송성공 문자부터", "특정 날짜"};
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 			                android.R.layout.select_dialog_item, str) {
 						
@@ -201,10 +186,7 @@ public class MainFragment extends Fragment {
 						@Override
 						public void onItemSelected(AdapterView<?> parent, View view, 
 					            int pos, long id) {
-							if(pos == 0){ 
-						        /*c.add(Calendar.DAY_OF_MONTH, -3);
-								readSMSMessage(MODE_LAST_THREE_DAYS, c.get(Calendar.YEAR), 
-										c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));*/
+							if(pos == 0){						        
 								Calendar rightNow = Calendar.getInstance(TimeZone.getDefault());
 								Date now = rightNow.getTime();
 								mToTimeStamp = now.getTime();	
@@ -215,22 +197,9 @@ public class MainFragment extends Fragment {
 						        mFromTimeStamp = date.getTime();
 							}
 							else if(pos == 1){
-								
-						        
-						        int year = c.get(Calendar.YEAR);
-						        int month = c.get(Calendar.MONTH)+1;
-						        int day = c.get(Calendar.DAY_OF_MONTH); 
-								
-								DatePickerDialog dlg = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-									
-									@Override
-									public void onDateSet(DatePicker view, int year, int monthOfYear,
-											int dayOfMonth) {
-										/*readSMSMessage(MainActivity.MODE_SPECIFIED_DATE, year, monthOfYear, dayOfMonth);*/
-										
-									}
-								}, year, month, day);
-								dlg.show();
+						        SetDateDialogFragment dlg = new SetDateDialogFragment();
+						        dlg.show(getFragmentManager(), null);
+						        //TODO add interface here
 							}
 						}
 
@@ -239,10 +208,8 @@ public class MainFragment extends Fragment {
 							//Do nothing
 						}
 					});
-			        
 				}
 				spinnerDate.setSelection(0);
-				
 			}
 		}
 		return view;
@@ -288,7 +255,6 @@ public class MainFragment extends Fragment {
 		ArrayList<Integer> array = CardInfo.convertStringToIntArray(holdingCards);
 		String addr = CardInfo.cardAddressList[array.get(mSelectIndex)*2];
 		
-		
 		Cursor c = null;
 		String[] PROJECTION = { "_id", "thread_id",
 			"address", "person", "date", "body" }; 
@@ -313,7 +279,6 @@ public class MainFragment extends Fragment {
 				}
 			}
 			
-			
 			if(AppDefine.IS_DEBUG){
 				//For debugging
 				long messageId = c.getLong(0);
@@ -337,24 +302,62 @@ public class MainFragment extends Fragment {
 		return 0;
 	}
 	
+	void invokeThread(int apiKind){
+		Bundle bundle = new Bundle();
+		Boolean[] selected = mListAdapter.getSelectedArray();
+		String rows = "";
+		for(int i = 0; i < selected.length; i++){
+			if(selected[i] == true){
+				rows = rows + mDataArray.get(i).getBody() + "\n";
+			}
+		}
+		
+		bundle.putString("rows", rows);
+		showProgress(true);
+		Button sendBtn = (Button) getView().findViewById(R.id.smsBtnUpload);
+		if(sendBtn != null){
+			sendBtn.setEnabled(false);
+		}		
+		ThreadRestAPI thread = new ThreadRestAPI(mHandler, getActivity(), 
+				apiKind, bundle);
+		thread.start();
+	}
+	
 	 Handler mHandler = new Handler(){
 
 		@Override
 		public void handleMessage(Message msg) {
+			showProgress(false);
+			Button btn = (Button) getView().findViewById(R.id.smsBtnUpload);
+			if(btn != null){
+				btn.setEnabled(true);
+			}
 			if(msg.what == AppDefine.MSG_API_OK){
-				showProgress(false);
-				Button btn = (Button) getView().findViewById(R.id.smsBtnUpload);
-				if(btn != null){
-					btn.setEnabled(true);
-				}
 				if(msg.arg1 == AppDefine.API_POST_SMS){
 					JSONObject obj = (JSONObject)msg.obj;
 					try{
 						int code = obj.getInt("code");
-						if(code != 200){
-							Toast.makeText(getActivity(), "Failed", Toast.LENGTH_LONG).show();
+						if(code == 400){
+							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+							builder.setMessage(getString(R.string.main_alert_dlg_msg))
+									.setPositiveButton(R.string.ok,
+											new DialogInterface.OnClickListener() {
+												public void onClick(DialogInterface dialog,
+														int id) {
+													invokeThread(AppDefine.API_POST_SMS_REPORT);
+													dialog.dismiss();
+												}
+											})
+									.setNegativeButton(R.string.cancel,
+											new DialogInterface.OnClickListener() {
+												public void onClick(DialogInterface dialog,
+														int id) {
+													dialog.dismiss();
+												}
+											});
+							builder.show();
 						}
-						else{
+						else if(code == 200){//Successful
 							Boolean[] selected = mListAdapter.getSelectedArray();
 							ArrayList<MessageEntity> arr = new ArrayList<MessageEntity>();
 							for(int i = 0; i < selected.length; i++){
@@ -369,10 +372,20 @@ public class MainFragment extends Fragment {
 								Toast.makeText(getActivity(), "DB Insert fail", Toast.LENGTH_LONG).show();
 							}
 						}
+						else{
+							Toast.makeText(getActivity(), "Failed with Code : " + code, 
+									Toast.LENGTH_LONG).show();
+						}
 					}catch(JSONException e){
-						
+						e.printStackTrace();
 					}
-				}				
+				}
+				else if(msg.arg1 == AppDefine.API_POST_SMS_REPORT){
+					
+				}
+			}
+			else{
+				Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
 			}
 			super.handleMessage(msg);
 		}

@@ -24,7 +24,7 @@
     tools:context=".MainActivity" >
  
     <LinearLayout 
-        android:id="@+id/smsActivityDateLayout"
+        android:id="@+id/smsActivitySearchLayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,12 +47,25 @@
             android:text="@string/text_search"
             android:layout_weight="20"/>
     </LinearLayout>
+    <LinearLayout 
+        android:id="@+id/smsDateSelectLayout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/smsActivitySearchLayout"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="asdf"/>
+        
+    </LinearLayout>
     <TextView
         android:id="@+id/smsMessageBoard"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_below="@id/smsActivityDateLayout"
-        android:textSize="20sp"
+        android:layout_below="@id/smsDateSelectLayout"
+        android:textSize="18sp"
         android:gravity="center"
         ></TextView>
     
@@ -61,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/text_search" />
+        android:text="@string/main_btn_input" />
 
     <ListView
         android:id="@+id/smsListView"

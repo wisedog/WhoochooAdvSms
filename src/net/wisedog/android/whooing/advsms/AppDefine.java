@@ -67,4 +67,5 @@ public class AppDefine {
 		
 	public static final int API_GET_SECTIONS = 2010;
 	public static final int API_POST_SMS = 2011;
+	public static final int API_POST_SMS_REPORT = 2012;
 }

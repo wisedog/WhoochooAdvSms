@@ -62,8 +62,9 @@ public class MessageEntity {
 		Date date = new Date(timestamp);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		Locale locale = new Locale("kr", "KR");
-	    java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale);
+		
+	    java.text.DateFormat df = java.text.DateFormat.getDateInstance(
+	    		java.text.DateFormat.LONG, Locale.KOREAN);
 	    String dateStr = df.format(calendar.getTime()).toString();
 	    return dateStr;
 	}

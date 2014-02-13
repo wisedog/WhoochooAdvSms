@@ -32,7 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
  
     // Database Name
-    private static final String DATABASE_NAME = "contactsManager";
+    private static final String DATABASE_NAME = "SmsManager";
  
     // Contacts table name
     private static final String TABLE_SENT_SMS = "sent_sms";
@@ -62,7 +62,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-
 	}
 	
 	public void dropTable(){
@@ -73,9 +72,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public boolean isSent(long id, String address, long fromTimeStamp, long toTimeStamp){
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("", null);
-		if (cursor != null)
-	        return true;
+		String sql = "SELECT * FROM " + TABLE_SENT_SMS + " WHERE id=" + id + 
+				" and address='" + address + "'";
+		Cursor cursor = db.rawQuery(sql, null);
+		if (cursor != null){
+			if(cursor.getCount() > 0){
+				return true;
+			}
+		}
 		return false;
 	}
 	
