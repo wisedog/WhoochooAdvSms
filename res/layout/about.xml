@@ -60,6 +60,15 @@
         android:text="@string/about_app_blog"
         android:textColor="#333333"
         android:textSize="14sp" />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:autoLink="web"
+        android:text="@string/about_app_github"
+        android:textColor="#333333"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/about_app_version"
@@ -75,30 +84,6 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:text="@string/about_app_creator"
-        android:textColor="#333333"
-        android:textSize="16sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/about_app_contact_whooing"
-        android:textColor="#333333"
-        android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/about_btn_contact_whooing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/about_app_contact_whooing_email" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:autoLink="web"
-        android:text="@string/about_app_whooing_url"
         android:textColor="#333333"
         android:textSize="16sp" />
 

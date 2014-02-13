@@ -42,15 +42,12 @@
     
     
     <!-- About dialog  -->
-    <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without language, currency.</string>
+    <string name="about_app_desc">이 앱은 써드파티 어플로서 후잉과는 아무 상관이 없습니다. 소스는 Github로 아파치 라이센스 2.0으로 공개되어 있습니다. 앱 특성 상 수신된 SMS를 읽지만 후잉 API에 사용하는 것 외에 별도로 저장하지 않습니다.</string>
     <string name="about_app_contact_developer">개발자 이메일</string>
     <string name="about_app_contact_developer_email">kim.jongha@gmail.com</string>
     
-    <string name="about_app_contact_whooing">Contact to Whooing</string>
-    <string name="about_app_contact_whooing_email">support@whooing.com</string>
-    
-    <string name="about_app_whooing_url">Website : http://whooing.com</string>
     <string name="about_app_blog">Blog : http://story.wisedog.net/category/my_programming_stuff/</string>
+    <string name="about_app_github">Source : https://github.com/wisedog/WhoochooAdvSms</string>
     <string name="about_app_creator">Created by Jongha Kim</string>
     <string name="about_app_send_email">Choose Email Client</string>
     <string name="about_app_version">Version : </string>

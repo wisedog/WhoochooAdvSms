@@ -45,21 +45,6 @@ public class AboutDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.about, container, false);
-        Button btnEmailWhooing = (Button) v.findViewById(R.id.about_btn_contact_whooing);
-        if(btnEmailWhooing != null){
-            btnEmailWhooing.setOnClickListener(new OnClickListener() {
-                
-                @Override
-                public void onClick(View v) {
-                    String emailAddress = getActivity().getString(R.string.about_app_contact_whooing_email);
-                    Intent it = new Intent(Intent.ACTION_SEND);   
-                    it.setType("message/rfc822");   
-                    it.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});   
-                    
-                    startActivity(Intent.createChooser(it, getActivity().getString(R.string.about_app_send_email)));  
-                }
-            });
-        }
         
         Button btnEmailDeveloper = (Button) v.findViewById(R.id.about_btn_contact_developer);
         if(btnEmailDeveloper != null){
