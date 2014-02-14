@@ -41,6 +41,7 @@ public class AppDefine {
 	public static String KEY_SHARED_SECTION_INFO = "SHARED_SECTION_INFO";
 	public static String KEY_SHARED_HOLDING_CARD = "SHARED_HOLDING_CARD";
 	public static String KEY_SHARED_CURRENT_SECTION_ID = "SHARED_CURRENT_SECTION";
+	public static String KEY_SHARED_LAST_TIMESTAMP = "SHARED_LAST_TIMESTAMP";
 	public static String KEY_SHARED_USER_INFO = "SHARED_USER_INFO";
 	
 	/*public static String KEY_SHARED_CURRENCY_CODE = "SHARED_CURRENCY_CODE";

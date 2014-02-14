@@ -18,6 +18,7 @@ package net.wisedog.android.whooing.advsms.fragments;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.json.JSONException;
@@ -31,6 +32,7 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -50,6 +52,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -82,7 +85,7 @@ public class MainFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.sms_main_fragment, container, false);
+		final View view = inflater.inflate(R.layout.sms_main_fragment, container, false);
 		if(view != null){
 			mDataArray = new ArrayList<MessageEntity>();
 			mListAdapter = new SmsListAdapter(getActivity(), mDataArray);
@@ -93,7 +96,7 @@ public class MainFragment extends Fragment{
 			final Spinner spinnerDate = (Spinner) view.findViewById(R.id.smsMainDateSpinner);
 			final Spinner spinnerCard = (Spinner) view.findViewById(R.id.smsMainCardSpinner);
 			TextView messageBoard = (TextView) view.findViewById(R.id.smsMessageBoard);
-			Button searchBtn = (Button) view.findViewById(R.id.smsBtnSearch);
+			final Button searchBtn = (Button) view.findViewById(R.id.smsBtnSearch);
 			final Button sendBtn = (Button) view.findViewById(R.id.smsBtnUpload);
 			
 			SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
@@ -181,12 +184,12 @@ public class MainFragment extends Fragment{
 			        spinnerDate.setAdapter(adapter);
 			        
 			        spinnerDate.setOnItemSelectedListener(new OnItemSelectedListener() {
-			        	final Calendar c = Calendar.getInstance();
 
 						@Override
-						public void onItemSelected(AdapterView<?> parent, View view, 
+						public void onItemSelected(AdapterView<?> parent, View view1, 
 					            int pos, long id) {
-							if(pos == 0){						        
+							if(pos == 0){
+								view.findViewById(R.id.smsDateSelectLayout).setVisibility(View.GONE);
 								Calendar rightNow = Calendar.getInstance(TimeZone.getDefault());
 								Date now = rightNow.getTime();
 								mToTimeStamp = now.getTime();	
@@ -195,11 +198,50 @@ public class MainFragment extends Fragment{
 						        Date date = rightNow.getTime();
 						        
 						        mFromTimeStamp = date.getTime();
+						        searchBtn.setEnabled(true);
 							}
 							else if(pos == 1){
-						        SetDateDialogFragment dlg = new SetDateDialogFragment();
-						        dlg.show(getFragmentManager(), null);
-						        //TODO add interface here
+								view.findViewById(R.id.smsDateSelectLayout).setVisibility(View.GONE);
+								SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+								long lastTimeStamp = prefs.getLong(AppDefine.KEY_SHARED_LAST_TIMESTAMP, -1);
+								if(lastTimeStamp == -1){
+									Toast.makeText(getActivity(), getString(R.string.main_msg_no_history), Toast.LENGTH_LONG).show();
+									searchBtn.setEnabled(false);
+									mDataArray.clear();
+									mListAdapter.notifyDataSetChanged();
+								}
+								else{
+									Calendar rightNow = Calendar.getInstance(TimeZone.getDefault());
+									Date now = rightNow.getTime();
+									mToTimeStamp = now.getTime();
+									mFromTimeStamp = lastTimeStamp;
+									searchBtn.setEnabled(true);
+								}						        
+							}
+							else if(pos == 2){
+								view.findViewById(R.id.smsDateSelectLayout).setVisibility(View.VISIBLE);
+								searchBtn.setEnabled(true);
+								ImageButton btnFrom = (ImageButton)view.findViewById(R.id.smsDateFromBtn);
+								ImageButton btnTo = (ImageButton)view.findViewById(R.id.smsDateToBtn);
+								final TextView textFrom = (TextView) view.findViewById(R.id.smsDateTextFrom);
+								final TextView textTo = (TextView) view.findViewById(R.id.smsDateTextTo);
+								textFrom.setTag(0);
+								textTo.setTag(1);
+								btnFrom.setOnClickListener(new OnClickListener() {
+									
+									@Override
+									public void onClick(View v) {
+										invokeDateDlg(textFrom);
+									}
+								});
+								
+								btnTo.setOnClickListener(new OnClickListener() {
+									
+									@Override
+									public void onClick(View v) {
+										invokeDateDlg(textTo);							
+									}
+								});
 							}
 						}
 
@@ -228,6 +270,32 @@ public class MainFragment extends Fragment{
 				progress.setVisibility(View.GONE);
 			}
 		}
+	}
+	
+	public void invokeDateDlg(final TextView v){
+		final Calendar c = Calendar.getInstance();
+		final int yy = c.get(Calendar.YEAR);
+        final int mm = c.get(Calendar.MONTH);
+        final int dd = c.get(Calendar.DAY_OF_MONTH); 
+		DatePickerDialog dlg = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				java.text.DateFormat df = java.text.DateFormat.getDateInstance(
+			    		java.text.DateFormat.SHORT, Locale.KOREAN);
+				Calendar c = Calendar.getInstance();
+				c.set(year, monthOfYear, dayOfMonth);
+				String dateStr = df.format(c.getTime()).toString();
+				v.setText(dateStr);
+				if(v.getTag() == Integer.valueOf(0)){//from
+					mFromTimeStamp = c.getTimeInMillis();
+				}else if(v.getTag() == Integer.valueOf(1)){	//to
+					mToTimeStamp = c.getTimeInMillis();
+				}
+			}
+		}, yy, mm, dd);
+		dlg.show();
 	}
 	
 
@@ -366,6 +434,10 @@ public class MainFragment extends Fragment{
 								}
 							}
 							if(mDb.addSentSms(arr) == true){
+								SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+								SharedPreferences.Editor editor = prefs.edit();
+								editor.putLong(AppDefine.KEY_SHARED_LAST_TIMESTAMP, mToTimeStamp);
+								editor.commit();
 								readSmsMessage(mFromTimeStamp, mToTimeStamp);
 							}
 							else{
@@ -381,7 +453,9 @@ public class MainFragment extends Fragment{
 					}
 				}
 				else if(msg.arg1 == AppDefine.API_POST_SMS_REPORT){
-					
+					JSONObject obj = (JSONObject)msg.obj;
+					Log.i("wisedog", obj.toString());
+					Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
 				}
 			}
 			else{

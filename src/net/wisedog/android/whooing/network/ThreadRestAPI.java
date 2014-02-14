@@ -86,7 +86,7 @@ public class ThreadRestAPI extends Thread {
 			Outside outside = new Outside();
 			try{
 				mBundle.putString("section_id", AppDefine.APP_SECTION);
-				result = outside.postOutside(AppDefine.APP_ID, AppDefine.REAL_TOKEN, 
+				result = outside.postReport(AppDefine.APP_ID, AppDefine.REAL_TOKEN, 
 						AppDefine.APP_SECRET, AppDefine.TOKEN_SECRET, mBundle);
 			}catch(NullPointerException e){
 				e.printStackTrace();

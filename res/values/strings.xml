@@ -19,6 +19,9 @@
     <string name="main_msg_need_setting">우측 상단 설정버튼을 눌러서 설정을 먼저 해주세요</string>
     <string name="main_btn_input">선택한 SMS 입력</string>
     <string name="main_alert_dlg_msg">후잉에서 인식을 못하네요. 후잉에 보고하시겠어요?</string>
+    <string name="main_msg_no_history">입력 성공한 기록이 없습니다.</string>
+    <string name="main_date_from"></string>
+    <string name="main_date_to"></string>
     
     <!-- Auth -->
     <string name="msg_auth_success">인증성공!</string>
@@ -52,6 +55,9 @@
     <string name="about_app_creator">Created by Jongha Kim</string>
     <string name="about_app_send_email">Choose Email Client</string>
     <string name="about_app_version">Version : </string>
+    
+    <!-- Content Description -->
+    <string name="desc_imgbtn_calendar">Calendar</string>
     
 
 </resources>

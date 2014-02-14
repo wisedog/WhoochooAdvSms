@@ -50,14 +50,52 @@
     <LinearLayout 
         android:id="@+id/smsDateSelectLayout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_below="@id/smsActivitySearchLayout"
         android:orientation="horizontal"
-        android:visibility="gone">
-        <TextView 
+        android:visibility="visible"
+        android:gravity="center">
+        
+        <TextView
+            android:id="@+id/smsDateTextFrom"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="asdf"/>
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="" />
+
+        <ImageButton
+            android:id="@+id/smsDateFromBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:contentDescription="@string/desc_imgbtn_calendar"
+            android:scaleType="fitCenter"
+            android:src="@drawable/btn_calendar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="~" />
+
+        <TextView
+            android:id="@+id/smsDateTextTo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="" />
+
+        <ImageButton
+            android:id="@+id/smsDateToBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:contentDescription="@string/desc_imgbtn_calendar"
+            android:scaleType="fitCenter"
+            android:src="@drawable/btn_calendar" />
         
     </LinearLayout>
     <TextView
