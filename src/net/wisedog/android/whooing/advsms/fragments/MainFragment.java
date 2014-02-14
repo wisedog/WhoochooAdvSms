@@ -454,8 +454,19 @@ public class MainFragment extends Fragment{
 				}
 				else if(msg.arg1 == AppDefine.API_POST_SMS_REPORT){
 					JSONObject obj = (JSONObject)msg.obj;
+					try{
+						int code = obj.getInt("code");
+						if(code == 200){
+							Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
+						}else{
+							Toast.makeText(getActivity(), "Failed with code " + code, Toast.LENGTH_LONG).show();
+						}
+					}
+					catch(JSONException e){
+						e.printStackTrace();
+					}
 					Log.i("wisedog", obj.toString());
-					Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
+					
 				}
 			}
 			else{
