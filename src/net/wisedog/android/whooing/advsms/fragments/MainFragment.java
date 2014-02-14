@@ -457,7 +457,8 @@ public class MainFragment extends Fragment{
 					try{
 						int code = obj.getInt("code");
 						if(code == 200){
-							Toast.makeText(getActivity(), "", Toast.LENGTH_LONG).show();
+							Toast.makeText(getActivity(), getString(R.string.main_msg_success), 
+									Toast.LENGTH_LONG).show();
 						}else{
 							Toast.makeText(getActivity(), "Failed with code " + code, Toast.LENGTH_LONG).show();
 						}
