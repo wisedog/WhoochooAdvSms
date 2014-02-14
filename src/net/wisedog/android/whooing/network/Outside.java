@@ -41,7 +41,7 @@ public class Outside extends AbstractAPI {
 	 * */
 	public JSONObject postOutside(String appID, String token, String appKey, String tokenSecret, 
 			Bundle bundle){
-		String url = "https://whooing.com/api/outside.json_array";
+		String url = "https://whooing.com/api/entries/outside.json";
 		if(bundle == null){
 			return null;
 		}
@@ -68,7 +68,7 @@ public class Outside extends AbstractAPI {
 	 * */
 	public JSONObject postReport(String appID, String token, String appKey, String tokenSecret, 
 			Bundle bundle){
-		String url = "https://whooing.com/api/outside_report.json";
+		String url = "https://whooing.com/api/entries/outside_report.json";
 		if(bundle == null){
 			return null;
 		}
