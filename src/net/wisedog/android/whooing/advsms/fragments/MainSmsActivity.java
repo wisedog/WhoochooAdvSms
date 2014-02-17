@@ -15,6 +15,7 @@
  */
 package net.wisedog.android.whooing.advsms.fragments;
 
+import net.wisedog.android.whooing.advsms.AppDefine;
 import net.wisedog.android.whooing.advsms.R;
 import net.wisedog.android.whooing.advsms.db.DatabaseHandler;
 
@@ -44,7 +45,12 @@ public class MainSmsActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		android.view.MenuInflater inflater = getMenuInflater();		
-		inflater.inflate(R.menu.menus, menu);
+		if(AppDefine.IS_DEBUG){
+			inflater.inflate(R.menu.menus_test, menu);
+		}else{
+			inflater.inflate(R.menu.menus, menu);
+		}
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 

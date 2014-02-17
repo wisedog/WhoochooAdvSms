@@ -92,10 +92,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			values.put(KEY_TIMESTAMP, entity.getTimestampInt());
 		 
 		    // Inserting Row
-		    db.insert(TABLE_SENT_SMS, null, values);
+		    if(db.insert(TABLE_SENT_SMS, null, values) == -1){
+		    	db.close(); // Closing database connection
+		    	return false;
+		    }
 		}
 	    
 	    db.close(); // Closing database connection
-		return false;
+		return true;
 	}
 }

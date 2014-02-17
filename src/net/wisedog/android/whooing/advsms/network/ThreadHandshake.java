@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.wisedog.android.whooing.network;
+package net.wisedog.android.whooing.advsms.network;
 
 import net.wisedog.android.whooing.advsms.AppDefine;
 import net.wisedog.android.whooing.advsms.util.JSONUtil;

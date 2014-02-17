@@ -16,7 +16,7 @@
 package net.wisedog.android.whooing.advsms;
 
 public class AppDefine {
-	static final public boolean IS_DEBUG = true; 
+	static final public boolean IS_DEBUG = false; 
 	
 	public static String APP_ID = "143";
 	public static String APP_SECRET = "8ac573c24c6d59961219ab4578464fee28a41fe9";

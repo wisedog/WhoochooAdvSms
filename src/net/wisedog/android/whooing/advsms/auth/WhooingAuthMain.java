@@ -17,8 +17,8 @@ package net.wisedog.android.whooing.advsms.auth;
 
 import net.wisedog.android.whooing.advsms.AppDefine;
 import net.wisedog.android.whooing.advsms.R;
-import net.wisedog.android.whooing.network.ThreadHandshake;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.advsms.network.ThreadHandshake;
+import net.wisedog.android.whooing.advsms.network.ThreadRestAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;

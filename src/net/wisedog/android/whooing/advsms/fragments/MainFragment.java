@@ -28,7 +28,7 @@ import net.wisedog.android.whooing.advsms.AppDefine;
 import net.wisedog.android.whooing.advsms.CardInfo;
 import net.wisedog.android.whooing.advsms.R;
 import net.wisedog.android.whooing.advsms.db.DatabaseHandler;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.advsms.network.ThreadRestAPI;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -142,7 +142,7 @@ public class MainFragment extends Fragment{
 					}
 					
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-			                android.R.layout.select_dialog_item, cards) {
+			                R.layout.spinner_item, cards) {
 						
 			            @Override
 			            public View getView(int position, View convertView, ViewGroup parent) {
@@ -169,9 +169,9 @@ public class MainFragment extends Fragment{
 				}
 				
 				if(spinnerDate != null){
-					String[] str = {"3일 전","마지막 전송성공 문자부터", "특정 날짜"};
+					String[] str = {"3일 전","최근 전송성공일부터", "특정 날짜"};
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-			                android.R.layout.select_dialog_item, str) {
+							R.layout.spinner_item, str) {
 						
 			            @Override
 			            public View getView(int position, View convertView, ViewGroup parent) {
