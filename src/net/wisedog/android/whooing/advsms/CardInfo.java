@@ -44,9 +44,10 @@ public class CardInfo {
 		"15443311", "HSBC",
 		"15778000", "신한은행", 
 		"16449999", "국민은행", 
-		"15882100", "농협은행",
 		"15991111", "하나은행",
-		"15447200", "신한체크"
+		"15447200", "신한체크",
+		"15995000", "우리체크",
+		"15882100", "농협은행"
 		};
 	
 	public static String convertIntArrayToString(ArrayList<Integer> array){
