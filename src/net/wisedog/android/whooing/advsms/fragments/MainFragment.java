@@ -298,6 +298,22 @@ public class MainFragment extends Fragment{
 		dlg.show();
 	}
 	
+	/**
+	 * Get current selected card address
+	 * @return	Card address string
+	 * */
+	public String getCurrentAddress(){
+		SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
+		String holdingCards = prefs.getString(AppDefine.KEY_SHARED_HOLDING_CARD, null);
+		
+		if(holdingCards == null){
+			return null;
+		}
+		ArrayList<Integer> array = CardInfo.convertStringToIntArray(holdingCards);
+		String addr = CardInfo.cardAddressList[array.get(mSelectIndex)*2];
+		return addr;
+	}
+	
 
 	/**
 	 * Read SMS messages in the phone
@@ -314,14 +330,10 @@ public class MainFragment extends Fragment{
 		
 		showProgress(true);
 		
-		SharedPreferences prefs = getActivity().getSharedPreferences(AppDefine.SHARED_PREFERENCE, 0);
-		String holdingCards = prefs.getString(AppDefine.KEY_SHARED_HOLDING_CARD, null);
-		
-		if(holdingCards == null){
+		String addr = getCurrentAddress();
+		if(addr == null){
 			return 0;
 		}
-		ArrayList<Integer> array = CardInfo.convertStringToIntArray(holdingCards);
-		String addr = CardInfo.cardAddressList[array.get(mSelectIndex)*2];
 		
 		Cursor c = null;
 		String[] PROJECTION = { "_id", "thread_id",
@@ -374,10 +386,15 @@ public class MainFragment extends Fragment{
 		Bundle bundle = new Bundle();
 		Boolean[] selected = mListAdapter.getSelectedArray();
 		String rows = "";
-		for(int i = 0; i < selected.length; i++){
-			if(selected[i] == true){
-				rows = rows + mDataArray.get(i).getBody() + "\n";
+		if(apiKind == AppDefine.API_POST_SMS){
+			for(int i = 0; i < selected.length; i++){
+				if(selected[i] == true){
+					rows = rows + mDataArray.get(i).getBody() + "\n";
+				}
 			}
+		}
+		else if(apiKind == AppDefine.API_POST_SMS_REPORT){
+			rows = getCurrentAddress();
 		}
 		
 		bundle.putString("rows", rows);
@@ -439,6 +456,7 @@ public class MainFragment extends Fragment{
 								editor.putLong(AppDefine.KEY_SHARED_LAST_TIMESTAMP, mToTimeStamp);
 								editor.commit();
 								readSmsMessage(mFromTimeStamp, mToTimeStamp);
+								Toast.makeText(getActivity(), getString(R.string.main_msg_success), Toast.LENGTH_LONG).show();
 							}
 							else{
 								Toast.makeText(getActivity(), "DB Insert fail", Toast.LENGTH_LONG).show();
@@ -457,7 +475,7 @@ public class MainFragment extends Fragment{
 					try{
 						int code = obj.getInt("code");
 						if(code == 200){
-							Toast.makeText(getActivity(), getString(R.string.main_msg_success), 
+							Toast.makeText(getActivity(), getString(R.string.main_msg_report_success), 
 									Toast.LENGTH_LONG).show();
 						}else{
 							Toast.makeText(getActivity(), "Failed with code " + code, Toast.LENGTH_LONG).show();
