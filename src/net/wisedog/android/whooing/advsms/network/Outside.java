@@ -73,13 +73,15 @@ public class Outside extends AbstractAPI {
 			return null;
 		}
 		
-		String source = bundle.getString("rows", null);
-		if(source == null){
+		String rows = bundle.getString("rows", null);
+		String sourceAddr = bundle.getString("source", null);
+		if(rows == null || sourceAddr == null){
 			return null;
 		}
 		
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("source", source));
+		nameValuePairs.add(new BasicNameValuePair("rows", rows));
+		nameValuePairs.add(new BasicNameValuePair("source", sourceAddr));
 		return callRawApiPost(url, appID, token, appKey, tokenSecret, null, nameValuePairs);
 	}
 }

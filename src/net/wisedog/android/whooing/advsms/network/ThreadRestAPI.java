@@ -57,7 +57,7 @@ public class ThreadRestAPI extends Thread {
         AppDefine.USER_ID = prefs.getInt(AppDefine.KEY_SHARED_USER_ID, 0);
         
 		if (AppDefine.IS_DEBUG) {
-			Log.i("wisedog", "user_id: " + AppDefine.USER_ID + " app_section : "
+			Log.d("wisedog", "user_id: " + AppDefine.USER_ID + " app_section : "
 					+ AppDefine.APP_SECTION + " real_token:" + AppDefine.REAL_TOKEN
 					+ " pin : " + AppDefine.PIN + " token_secret : "
 					+ AppDefine.TOKEN_SECRET);

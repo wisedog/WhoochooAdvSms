@@ -386,15 +386,18 @@ public class MainFragment extends Fragment{
 		Bundle bundle = new Bundle();
 		Boolean[] selected = mListAdapter.getSelectedArray();
 		String rows = "";
-		if(apiKind == AppDefine.API_POST_SMS){
-			for(int i = 0; i < selected.length; i++){
-				if(selected[i] == true){
-					rows = rows + mDataArray.get(i).getBody() + "\n";
-				}
+		for(int i = 0; i < selected.length; i++){
+			if(selected[i] == true){
+				rows = rows + mDataArray.get(i).getBody() + "\n";
 			}
 		}
-		else if(apiKind == AppDefine.API_POST_SMS_REPORT){
-			rows = getCurrentAddress();
+		
+		if(apiKind == AppDefine.API_POST_SMS_REPORT){
+			String currentAddr = getCurrentAddress();
+			bundle.putString("source", currentAddr);
+		}
+		else{
+			;// Do nothing
 		}
 		
 		bundle.putString("rows", rows);
