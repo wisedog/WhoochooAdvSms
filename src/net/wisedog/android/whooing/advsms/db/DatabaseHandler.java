@@ -23,8 +23,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	
@@ -41,22 +43,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_ADDRESS = "address";
     private static final String KEY_TIMESTAMP = "timestamp";
+    
+    private Context mContext;
 
 	public DatabaseHandler(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
 	}
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		mContext = context;
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_SENT_SMS + "("
+		String createTableSQL = "CREATE TABLE " + TABLE_SENT_SMS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_ADDRESS + " TEXT,"
                 + KEY_TIMESTAMP + " INTEGER" + ")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
+		try{
+			db.execSQL(createTableSQL);
+		}
+		catch(SQLiteException e){
+			e.printStackTrace();
+			Toast.makeText(mContext, "DB create fail", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
@@ -74,12 +86,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String sql = "SELECT * FROM " + TABLE_SENT_SMS + " WHERE id=" + id + 
 				" and address='" + address + "'";
-		Cursor cursor = db.rawQuery(sql, null);
-		if (cursor != null){
-			if(cursor.getCount() > 0){
-				return true;
+		try{
+			Cursor cursor = db.rawQuery(sql, null);
+			if (cursor != null){
+				if(cursor.getCount() > 0){
+					return true;
+				}
 			}
 		}
+		catch(SQLiteException e){
+			e.printStackTrace();
+			Toast.makeText(mContext, "DB 오류가 발생했습니다. 앱을 재설치해주세요", Toast.LENGTH_LONG).show();
+		}
+		
 		return false;
 	}
 	
