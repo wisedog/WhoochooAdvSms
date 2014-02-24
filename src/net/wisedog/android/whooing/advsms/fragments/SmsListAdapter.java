@@ -22,11 +22,10 @@ import net.wisedog.android.whooing.advsms.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 /**
@@ -107,11 +106,13 @@ public class SmsListAdapter extends BaseAdapter {
         }
         CheckBox checkbox = (CheckBox) convertView.findViewById(R.id.smsListCheckBox);
         if(checkbox != null){
-        	checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        	checkbox.setChecked(mSelected[pos]);
+        	checkbox.setOnClickListener(new OnClickListener() {
 				
 				@Override
-				public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
-					mSelected[pos] = isChecked;
+				public void onClick(View v) {
+					mSelected[pos] = !mSelected[pos];
+					
 				}
 			});
         }
