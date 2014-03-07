@@ -17,6 +17,7 @@ package net.wisedog.android.whooing.advsms.fragments;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class MessageEntity {
@@ -67,6 +68,20 @@ public class MessageEntity {
 	    		java.text.DateFormat.LONG, Locale.KOREAN);
 	    String dateStr = df.format(calendar.getTime()).toString();
 	    return dateStr;
+	}
+	
+	public String getSpecialDateFormat(){
+		//Date date = new Date(timestamp);
+		GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
+		calendar.setTimeInMillis(timestamp);
+		
+		int m = calendar.get(Calendar.MONTH);
+		int d = calendar.get(Calendar.DAY_OF_MONTH);
+		int h = calendar.get(Calendar.HOUR);
+		int minutes = calendar.get(Calendar.MINUTE);
+		
+		String str = String.format(Locale.KOREAN, "%02d/%02d %02d:%02d", m, d, h, minutes);
+		return str;
 	}
 	
 	public long getTimestampInt(){

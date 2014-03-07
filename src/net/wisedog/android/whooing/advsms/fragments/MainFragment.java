@@ -386,14 +386,27 @@ public class MainFragment extends Fragment{
 		Bundle bundle = new Bundle();
 		Boolean[] selected = mListAdapter.getSelectedArray();
 		String rows = "";
+		String currentAddr = getCurrentAddress();
+		String currentDate = "";
 		for(int i = 0; i < selected.length; i++){
 			if(selected[i] == true){
-				rows = rows + mDataArray.get(i).getBody() + "\n";
+				try{
+					MessageEntity entity = mDataArray.get(i);
+					if(currentAddr.compareTo("15881500") == 0){
+						currentDate = " " + entity.getSpecialDateFormat();
+						
+					}else{
+						currentDate = "";
+					}
+					
+					rows = rows + entity.getBody() + currentDate + "\n";
+				}catch(NullPointerException e){
+					e.printStackTrace();
+				}				
 			}
 		}
 		
 		if(apiKind == AppDefine.API_POST_SMS_REPORT){
-			String currentAddr = getCurrentAddress();
 			bundle.putString("source", currentAddr);
 		}
 		else{
