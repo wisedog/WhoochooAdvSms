@@ -392,14 +392,16 @@ public class MainFragment extends Fragment{
 			if(selected[i] == true){
 				try{
 					MessageEntity entity = mDataArray.get(i);
-					if(currentAddr.compareTo("15881500") == 0){
-						currentDate = " " + entity.getSpecialDateFormat();
-						
+
+				    Pattern p = Pattern.compile("\\d\\d/\\d\\d"); // 01/23와 같은 날짜 데이터가 없으면 추가하기(번호보다 정규식으로)
+				    Matcher m = p.matcher(entity.getBody());
+			        if(m.find()){
+						currentDate = ""; // 있으면 원문만
 					}else{
-						currentDate = "";
+						currentDate = " " + entity.getSpecialDateFormat(); // 없으면 01/23 12:00 붙여줌
 					}
 					
-					rows = rows + entity.getBody() + currentDate + "\n";
+					rows = entity.getBody() + currentDate + "\n" + rows; // 최근 것이 앞으로 가도록 결합
 				}catch(NullPointerException e){
 					e.printStackTrace();
 				}				
